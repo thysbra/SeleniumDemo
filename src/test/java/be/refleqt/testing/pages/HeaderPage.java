@@ -8,24 +8,23 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.List;
 
-public class ProductListingPage {
-    @FindBy(className = "btn_inventory")
-    List<WebElement> itemTilesAddToCartButtons;
+public class HeaderPage {
+    @FindBy(id = "shopping_cart_container")
+    WebElement shoppingCartBtn;
 
     private WebDriver driver;
     WebDriverWait wait;
 
-    public ProductListingPage() {
+    public HeaderPage() {
         this.driver = DriverManager.getWebDriver();
         PageFactory.initElements(driver, this);
         wait = new WebDriverWait(driver, Duration.ofSeconds(45));
     }
 
-    public ProductListingPage addRandomItemToCart(){
-        int random_int = (int)Math.floor(Math.random()*(itemTilesAddToCartButtons.size()+1));
-        itemTilesAddToCartButtons.get(random_int).click();
-        return this;
+    public ShoppingCartPage goToShoppingCart(){
+        shoppingCartBtn.click();
+        return new ShoppingCartPage();
+
     }
 }

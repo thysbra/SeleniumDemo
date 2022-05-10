@@ -1,46 +1,47 @@
 package be.refleqt.testing.pages;
 
-import be.refleqt.testing.steps.CommonSteps;
-import org.openqa.selenium.By;
+import be.refleqt.testing.support.DriverManager;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class HomePage {
-
     @FindBy(id = "user-name")
-    WebElement usernameField;
+    WebElement usernameFld;
 
     @FindBy(id = "password")
-    WebElement passwordField;
+    WebElement passwordFld;
 
     @FindBy(id = "login-button")
-    WebElement submitButton;
+    WebElement loginBtn;
+
+    private WebDriver driver;
+    WebDriverWait wait;
 
     public HomePage() {
-        PageFactory.initElements(CommonSteps.getDriver(), this);
+        this.driver = DriverManager.getWebDriver();
+        PageFactory.initElements(driver, this);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(45));
     }
 
-    public HomePage fillInUsername(String username){
-        usernameField.sendKeys(username);
+    public HomePage fillInUsername(String username) {
+        wait.until(ExpectedConditions.visibilityOf(usernameFld));
+        usernameFld.sendKeys(username);
         return this;
     }
 
-    public HomePage fillInPassword(String password){
-        passwordField.sendKeys(password);
+    public HomePage fillInPassword(String password) {
+        passwordFld.sendKeys(password);
         return this;
     }
 
-    public ProductListingPage submitLogin(){
-        submitButton.click();
-
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+    public ProductListingPage login() {
+        loginBtn.click();
         return new ProductListingPage();
     }
 
